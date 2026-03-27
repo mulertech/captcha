@@ -1,0 +1,9 @@
+mulertech_captcha_image:
+    path: /captcha/image
+    controller: MulerTech\CaptchaBundle\Controller\CaptchaController::image
+    methods: [GET]
+
+mulertech_captcha_refresh:
+    path: /captcha/refresh
+    controller: MulerTech\CaptchaBundle\Controller\CaptchaController::refresh
+    methods: [GET]

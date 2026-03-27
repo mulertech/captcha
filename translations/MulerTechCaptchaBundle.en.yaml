@@ -1,0 +1,4 @@
+captcha:
+    refresh: Refresh
+    image_alt: Verification code
+    answer_label: Result of the calculation

@@ -1,0 +1,2 @@
+captcha.error.invalid: Le code de vérification est incorrect.
+captcha.error.expired: "Le code de vérification a expiré, veuillez recommencer."

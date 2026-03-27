@@ -1,0 +1,54 @@
+{
+    "name": "mulertech/captcha",
+    "description": "Symfony bundle providing a self-hosted image-based math captcha for bot protection",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "keywords": ["symfony", "captcha", "bot-protection", "spam", "form", "security"],
+    "homepage": "https://github.com/mulertech/captcha",
+    "authors": [
+        {
+            "name": "Sebastien Muler",
+            "email": "sebastien.muler@mulertech.net"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/mulertech/captcha/issues",
+        "source": "https://github.com/mulertech/captcha"
+    },
+    "require": {
+        "php": "^8.4",
+        "ext-gd": "*",
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+        "symfony/form": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-foundation": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0",
+        "symfony/routing": "^6.4 || ^7.0 || ^8.0",
+        "symfony/validator": "^6.4 || ^7.0 || ^8.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "mulertech/docker-dev": "^3.2",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^11.5 || ^12.0",
+        "symfony/config": "^6.4 || ^7.0 || ^8.0",
+        "symfony/yaml": "^6.4 || ^7.0 || ^8.0",
+        "twig/twig": "^3.0 || ^4.0"
+    },
+    "suggest": {
+        "twig/twig": "Required to use the bundled form theme"
+    },
+    "autoload": {
+        "psr-4": {
+            "MulerTech\\CaptchaBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MulerTech\\CaptchaBundle\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable"
+}

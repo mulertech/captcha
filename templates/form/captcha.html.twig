@@ -1,0 +1,37 @@
+{% block mulertech_captcha_row %}
+<div class="captcha-wrapper mb-4" data-captcha-refresh-url="{{ form.vars.captcha_refresh_url }}">
+    <img src="{{ form.vars.captcha_image_url }}"
+         alt="{{ 'captcha.image_alt'|trans({}, 'MulerTechCaptchaBundle') }}"
+         class="captcha-image">
+    <button type="button" class="captcha-refresh-btn">
+        ↺ {{ 'captcha.refresh'|trans({}, 'MulerTechCaptchaBundle') }}
+    </button>
+    {{ form_widget(form.token) }}
+    {{ form_label(form.answer) }}
+    {{ form_widget(form.answer) }}
+    {{ form_errors(form) }}
+</div>
+<script{% if form.vars.csp_nonce %} nonce="{{ form.vars.csp_nonce }}"{% endif %}>
+(function(){
+    function refreshCaptcha(wrapper) {
+        var url = wrapper.dataset.captchaRefreshUrl;
+        fetch(url)
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+                wrapper.querySelector('img').src = d.imageUrl;
+                wrapper.querySelector('input[type=hidden]').value = d.token;
+            });
+    }
+
+    var wrapper = document.currentScript.previousElementSibling;
+
+    wrapper.querySelector('.captcha-refresh-btn').addEventListener('click', function() {
+        refreshCaptcha(wrapper);
+    });
+
+    wrapper.querySelector('.captcha-image').addEventListener('error', function() {
+        refreshCaptcha(wrapper);
+    });
+})();
+</script>
+{% endblock %}
