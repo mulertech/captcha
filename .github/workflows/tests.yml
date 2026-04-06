@@ -26,12 +26,12 @@ jobs:
           extensions: gd
 
       - name: Install dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           composer-options: --prefer-stable
 
       - name: Run tests
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 5
           max_attempts: 3
@@ -61,7 +61,7 @@ jobs:
           extensions: gd
 
       - name: Install dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           composer-options: --prefer-stable --ignore-platform-req=ext-posix
 
@@ -69,7 +69,7 @@ jobs:
         run: vendor/bin/phpunit --version
 
       - name: Run tests
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 5
           max_attempts: 3
@@ -95,7 +95,7 @@ jobs:
           extensions: gd
 
       - name: Install dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           composer-options: --prefer-stable
 
