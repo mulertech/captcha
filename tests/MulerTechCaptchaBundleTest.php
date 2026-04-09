@@ -69,6 +69,93 @@ final class MulerTechCaptchaBundleTest extends TestCase
         self::assertTrue($container->hasAlias(CaptchaImageRenderer::class));
     }
 
+    public function testPrependExtensionConfiguresTwigFormTheme(): void
+    {
+        $container = new ContainerBuilder();
+
+        $twigExtension = new class implements ExtensionInterface {
+            /** @var array<int, array<string, mixed>> */
+            public array $configs = [];
+
+            public function load(array $configs, ContainerBuilder $container): void
+            {
+                $this->configs = $configs;
+            }
+
+            public function getNamespace(): string
+            {
+                return '';
+            }
+
+            public function getXsdValidationBasePath(): string|false
+            {
+                return false;
+            }
+
+            public function getAlias(): string
+            {
+                return 'twig';
+            }
+        };
+        $container->registerExtension($twigExtension);
+
+        $frameworkExtension = new class implements ExtensionInterface {
+            /** @var array<int, array<string, mixed>> */
+            public array $configs = [];
+
+            public function load(array $configs, ContainerBuilder $container): void
+            {
+                $this->configs = $configs;
+            }
+
+            public function getNamespace(): string
+            {
+                return '';
+            }
+
+            public function getXsdValidationBasePath(): string|false
+            {
+                return false;
+            }
+
+            public function getAlias(): string
+            {
+                return 'framework';
+            }
+        };
+        $container->registerExtension($frameworkExtension);
+
+        $fileLocator = new FileLocator();
+        $phpLoader = new PhpFileLoader($container, $fileLocator);
+        $instanceof = [];
+        $configurator = new ContainerConfigurator($container, $phpLoader, $instanceof, '', __DIR__);
+
+        $this->bundle->prependExtension($configurator, $container);
+
+        $twigConfig = $container->getExtensionConfig('twig');
+        self::assertNotEmpty($twigConfig);
+        self::assertSame(['@MulerTechCaptcha/form/captcha.html.twig'], $twigConfig[0]['form_themes']);
+
+        $frameworkConfig = $container->getExtensionConfig('framework');
+        self::assertNotEmpty($frameworkConfig);
+        self::assertArrayHasKey('translator', $frameworkConfig[0]);
+    }
+
+    public function testPrependExtensionWithoutTwigOrFramework(): void
+    {
+        $container = new ContainerBuilder();
+
+        $fileLocator = new FileLocator();
+        $phpLoader = new PhpFileLoader($container, $fileLocator);
+        $instanceof = [];
+        $configurator = new ContainerConfigurator($container, $phpLoader, $instanceof, '', __DIR__);
+
+        $this->bundle->prependExtension($configurator, $container);
+
+        self::assertEmpty($container->getExtensionConfig('twig'));
+        self::assertEmpty($container->getExtensionConfig('framework'));
+    }
+
     public function testLoadRoutesRegistersRoutes(): void
     {
         $collection = new RouteCollection();

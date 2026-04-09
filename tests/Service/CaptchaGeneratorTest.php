@@ -180,6 +180,41 @@ final class CaptchaGeneratorTest extends TestCase
         self::assertLessThanOrEqual(5, $activeCount);
     }
 
+    public function testIsExpiredReturnsTrueWhenCreatedAtMissing(): void
+    {
+        $token = 'no_created_at';
+        $this->session->set(CaptchaGenerator::SESSION_PREFIX.$token, [
+            'question' => '1 + 1',
+            'answer' => 2,
+        ]);
+
+        self::assertFalse($this->generator->hasToken($this->session, $token));
+    }
+
+    public function testIsExpiredReturnsTrueWhenCreatedAtNotInt(): void
+    {
+        $token = 'bad_created_at';
+        $this->session->set(CaptchaGenerator::SESSION_PREFIX.$token, [
+            'question' => '1 + 1',
+            'answer' => 2,
+            'created_at' => 'not_an_int',
+        ]);
+
+        self::assertFalse($this->generator->hasToken($this->session, $token));
+    }
+
+    public function testEnforceTokenLimitBreaksWhenAllDataNull(): void
+    {
+        for ($i = 0; $i < 6; ++$i) {
+            $this->session->set(CaptchaGenerator::SESSION_PREFIX.'null_'.$i, null);
+        }
+
+        $data = $this->generator->generate($this->session);
+
+        self::assertInstanceOf(CaptchaData::class, $data);
+        self::assertTrue($this->session->has(CaptchaGenerator::SESSION_PREFIX.$data->token));
+    }
+
     public function testExpiredTokensPrunedOnGenerate(): void
     {
         $this->session->set(CaptchaGenerator::SESSION_PREFIX.'old1', [

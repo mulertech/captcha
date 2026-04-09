@@ -39,4 +39,25 @@ final class CaptchaImageRendererTest extends TestCase
             self::assertNotEmpty($result, sprintf('Render failed for question: %s', $question));
         }
     }
+
+    public function testRenderThrowsExceptionOnFailure(): void
+    {
+        CaptchaImageRendererObGetCleanOverride::$returnFalse = true;
+
+        try {
+            $this->expectException(\RuntimeException::class);
+            $this->expectExceptionMessage('Failed to render captcha image.');
+            $this->renderer->render('1 + 1');
+        } finally {
+            CaptchaImageRendererObGetCleanOverride::$returnFalse = false;
+        }
+    }
+}
+
+/**
+ * @internal
+ */
+final class CaptchaImageRendererObGetCleanOverride
+{
+    public static bool $returnFalse = false;
 }
