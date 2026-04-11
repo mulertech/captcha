@@ -25,9 +25,19 @@ session. Protects contact and quote forms against bots without any third-party d
 composer require mulertech/captcha
 ```
 
-Routes and form theme are **automatically registered** — no additional configuration required.
+The form theme is **automatically registered** — no additional configuration required.
 
-The bundle registers two endpoints:
+### Routes
+
+Import the bundle routes in your application:
+
+```yaml
+# config/routes/mulertech_captcha.yaml
+mulertech_captcha:
+    resource: "@MulerTechCaptchaBundle/config/routes.yaml"
+```
+
+The bundle provides two endpoints:
 
 | Route | Path | Description |
 |---|---|---|
